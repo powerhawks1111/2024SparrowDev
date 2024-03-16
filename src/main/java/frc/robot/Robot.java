@@ -76,7 +76,8 @@ public class Robot extends TimedRobot{
     @Override
     public void robotInit() {
     
-     m_RobotContainer.setDefaultCommands();
+     //m_RobotContainer.setDefaultCommands();
+     m_RobotContainer.configureButtonBindings();;
      
     RobotContainer.m_ShooterArmSubsystem.positionArmShooter(0.423556443649725, false);
   
@@ -105,7 +106,7 @@ public class Robot extends TimedRobot{
 
         m_RobotContainer.configureButtonBindings();
         
-     m_RobotContainer.setDefaultCommands();
+    // m_RobotContainer.setDefaultCommands();
         
         
 
@@ -135,7 +136,7 @@ public class Robot extends TimedRobot{
         //     m_autonomousCommand.cancel();
         // }
         
-     m_RobotContainer.setDefaultCommands();
+     //m_RobotContainer.setDefaultCommands();
 
         
         m_RobotContainer.configureButtonBindings();
@@ -153,6 +154,8 @@ public class Robot extends TimedRobot{
         // // driveAndOperate.testJoystickRead();
         // driveAndOperate.driveAndOperate();
         //SmartDashboard.putNumber("xVisions", m_RobotContainer.visionSubsystem.getVisionTags(2)[1]);
+        
+     m_RobotContainer.configureButtonBindings();;
        
         
     }

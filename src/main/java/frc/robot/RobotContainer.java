@@ -90,7 +90,7 @@ public class RobotContainer {
 
 
     public void configureButtonBindings () {
-        //drivetrain.drive(driveJoystick.getRawAxis(1), -driveJoystick.getRawAxis(0), driveJoystick.getRawAxis(4), true, false);
+        drivetrain.drive(driveJoystick.getRawAxis(1), -driveJoystick.getRawAxis(0), driveJoystick.getRawAxis(4), true, false);
         new JoystickButton(driveJoystick, 1).onTrue(new intake());
          new JoystickButton(driveJoystick, 2).onTrue(new shootIndex());
     //  new JoystickButton(mJoystick, 2).onTrue(new intakeControl());
@@ -112,7 +112,7 @@ public class RobotContainer {
     // Set default/passive commands for each subsystem
     public void setDefaultCommands () {
         
-        drivetrain.setDefaultCommand(new Drive(drivetrain, driveJoystick));
+        //drivetrain.setDefaultCommand(new Drive(drivetrain, driveJoystick));
         //ShooterSubsystem.setDefaultCommand(new Shoot(m_shooterSubsystem, 0));
 
     }
