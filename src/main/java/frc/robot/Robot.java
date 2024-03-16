@@ -50,7 +50,7 @@ public class Robot extends TimedRobot{
      * Main robot functions
      */
     //private RobotContainer m_RobotContainer;
-    //private Command m_autonomousCommand;
+    private Command m_autonomousCommand;
     //private Autonomous autonomous = new Autonomous();
     private Command m_autoBuilder;
     private RobotContainer m_RobotContainer = new RobotContainer();
@@ -78,8 +78,7 @@ public class Robot extends TimedRobot{
     
      //m_RobotContainer.setDefaultCommands();
      m_RobotContainer.configureButtonBindings();;
-     
-    RobotContainer.m_ShooterArmSubsystem.positionArmShooter(0.423556443649725, false);
+    
   
 
 
@@ -103,7 +102,6 @@ public class Robot extends TimedRobot{
 
     @Override
     public void robotPeriodic() {
-
         m_RobotContainer.configureButtonBindings();
         
     // m_RobotContainer.setDefaultCommands();
@@ -115,26 +113,22 @@ public class Robot extends TimedRobot{
     @Override
     public void autonomousInit() {
 
-        m_RobotContainer.driveAutoPath(); 
+        //m_RobotContainer.driveAutoPath(); 
         
     }
 
     @Override
     public void autonomousPeriodic() {
-
-       
-        m_RobotContainer.driveAutoPath(); 
-        
-        
         
         
     }
 
     @Override
     public void teleopInit() {
-        // if (m_autonomousCommand != null) {
-        //     m_autonomousCommand.cancel();
-        // }
+        if (m_autonomousCommand != null) {
+            m_autonomousCommand.cancel();
+        }
+
         
      //m_RobotContainer.setDefaultCommands();
 

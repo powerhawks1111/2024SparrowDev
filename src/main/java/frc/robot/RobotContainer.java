@@ -11,12 +11,14 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.drive.Drive;
+import frc.robot.commands.drive.resetNavx;
 import frc.robot.subsystems.SwerveModule;
 
 
@@ -48,6 +50,7 @@ public class RobotContainer {
     public final Drivetrain drivetrain = new Drivetrain();
     public DigitalInput m_condeDetector = new DigitalInput(9);
     public Joystick driveJoystick = new Joystick(0);
+    public Joystick operatorJoystick = new Joystick(1);
 
     public static intakeArmSubsystem m_IntakeArmSubsystem = new intakeArmSubsystem();
   public static intakeRollerSubsystem m_IntakeRollerSubsystem = new intakeRollerSubsystem();
@@ -56,6 +59,9 @@ public class RobotContainer {
   public static shooterArmSubsystem m_ShooterArmSubsystem = new shooterArmSubsystem();
   public static shooterRollersSubsystem m_ShooterRollersSubsystem = new shooterRollersSubsystem();
   private resetSubsystem  resetVariables = new resetSubsystem();
+
+  
+  
   
     
 
@@ -84,18 +90,47 @@ public class RobotContainer {
     public RobotContainer () {
         configureButtonBindings();
        
-        //NamedCommands.registerCommand("ResetNavxFieldHeading", drivetrain.resetNavxMark(0));//if this offsets by 90, like forward is left or right, go into drivetrain and delete the part about initial angle, that may be the issue. 
+        NamedCommands.registerCommand("ResetNavxFieldHeading", drivetrain.resetNavxMark(0));//if this offsets by 90, like forward is left or right, go into drivetrain and delete the part about initial angle, that may be the issue. 
+       
+        NamedCommands.registerCommand("Spool Up", new spool());
+        
+        NamedCommands.registerCommand("Shoot", new shootIndex());
+        NamedCommands.registerCommand("Intake", new intake());
+
+        var alliance = DriverStation.getAlliance();
+                    
+                        
+                    
+
+        
+
     }
     
 
 
-    public void configureButtonBindings () {
-        drivetrain.drive(driveJoystick.getRawAxis(1), -driveJoystick.getRawAxis(0), driveJoystick.getRawAxis(4), true, false);
-        new JoystickButton(driveJoystick, 1).onTrue(new intake());
+    public void configureButtonBindings () { 
+        drivetrain.drive(driveJoystick.getRawAxis(1), -driveJoystick.getRawAxis(0), -driveJoystick.getRawAxis(4), true, false);
+        new JoystickButton(operatorJoystick, 1).onTrue(new intake());
          new JoystickButton(driveJoystick, 2).onTrue(new shootIndex());
     //  new JoystickButton(mJoystick, 2).onTrue(new intakeControl());
-         new JoystickButton(driveJoystick, 6).onTrue(new spool());
+         new JoystickButton(operatorJoystick, 6).onTrue(new spool());
+         
+         new JoystickButton(operatorJoystick, 6).onTrue(new spool());
+        if (driveJoystick.getRawButton(4) == false) {
+            drivetrain.drive(driveJoystick.getRawAxis(1), -driveJoystick.getRawAxis(0), -driveJoystick.getRawAxis(4), true, false);
         
+        } else {           
+             drivetrain.drive(-driveJoystick.getRawAxis(1), driveJoystick.getRawAxis(0), driveJoystick.getRawAxis(4), true, false);
+        
+        }
+
+
+
+        
+        var alliance = DriverStation.getAlliance();
+        
+
+        }
         //shooter commands
         // new Shoot(m_shooterSubsystem, 0);
         // new JoystickButton(driveJoystick, 6).onFalse(new Shoot(m_shooterSubsystem, 0)); //runs the shoot motors, for the operator
@@ -105,9 +140,6 @@ public class RobotContainer {
 
         // so far all of these are set up for a single controller
         
-        
-         
-    }
 
     // Set default/passive commands for each subsystem
     public void setDefaultCommands () {
@@ -117,16 +149,11 @@ public class RobotContainer {
 
     }
 
-    public Command driveAutoPath() {
+    // public Command driveAutoPath() {
         
-    return new PathPlannerAuto("test");
+    // return new PathPlannerAuto("autoOne");
      
 
         
-    }
-
-    
-  
-
+    // }
 }
- 

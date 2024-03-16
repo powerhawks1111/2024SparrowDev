@@ -36,7 +36,7 @@ public class intakeArmSubsystem extends SubsystemBase {
             // double currentPosition = absoluteEncoder.getOutput()*(2*Math.PI);
             // double voltage = m_PidController.calculate(currentPosition, desiredPosition);
             // motorArmLeft.set(-voltage);
-            m_PidController.setReference(desiredPosition, ControlType.kPosition); 
+            m_PidController.setReference(desiredPosition, ControlType.kPosition);
         // }
     }
     public void calibrateCurrent(){
@@ -50,6 +50,8 @@ public class intakeArmSubsystem extends SubsystemBase {
                 m_PidController.setReference(0, ControlType.kPosition);
                 resetSubsystem.intakeHasNode = false;
             }
+            m_PidController.setReference(0, ControlType.kPosition);
+            resetSubsystem.intakeHasNode = false;
         // SmartDashboard.putNumber("AbsEncoderVal", absoluteEncoder.getOutput()*(2*Math.PI));
     }
 

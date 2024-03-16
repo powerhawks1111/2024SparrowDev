@@ -42,8 +42,9 @@ public class shooterArmSubsystem extends SubsystemBase {
         return absoluteShooterEncoder.getOutput()*(2*Math.PI);
     }
     @Override
-    public void periodic() {
-        chainCommand();
+    public void periodic(){
+        double voltage = m_ControllerArm.calculate(getCurrentPosition(), .85);
+        armMotor.set(voltage);
         SmartDashboard.putNumber("armPosition", getCurrentPosition());
     }
 }
