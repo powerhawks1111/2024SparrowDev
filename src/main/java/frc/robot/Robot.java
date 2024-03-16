@@ -78,7 +78,8 @@ public class Robot extends TimedRobot{
     
      m_RobotContainer.setDefaultCommands();
      
-     m_RobotContainer.smartDashboardUpdater.setupSmartDashboard();
+    RobotContainer.m_ShooterArmSubsystem.positionArmShooter(0.423556443649725, false);
+  
 
 
       
@@ -102,9 +103,10 @@ public class Robot extends TimedRobot{
     @Override
     public void robotPeriodic() {
 
-        m_RobotContainer.setDefaultCommands();
         m_RobotContainer.configureButtonBindings();
-        CommandScheduler.getInstance();
+        
+     m_RobotContainer.setDefaultCommands();
+        
         
 
     }
@@ -133,13 +135,12 @@ public class Robot extends TimedRobot{
         //     m_autonomousCommand.cancel();
         // }
         
+     m_RobotContainer.setDefaultCommands();
 
-        CommandScheduler.getInstance().cancelAll();
-        m_RobotContainer.setDefaultCommands();
+        
         m_RobotContainer.configureButtonBindings();
 
-         m_RobotContainer.smartDashboardUpdater.setupSmartDashboard();
-
+         
         //m_RobotContainer.m_ShooterArmSubsystem.resetEncoderPosition();
         
     }
@@ -153,9 +154,6 @@ public class Robot extends TimedRobot{
         // driveAndOperate.driveAndOperate();
         //SmartDashboard.putNumber("xVisions", m_RobotContainer.visionSubsystem.getVisionTags(2)[1]);
        
-        m_RobotContainer.setDefaultCommands();
-        m_RobotContainer.configureButtonBindings();
-        CommandScheduler.getInstance();
         
     }
     

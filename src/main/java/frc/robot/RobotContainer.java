@@ -19,6 +19,22 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.drive.Drive;
 import frc.robot.subsystems.SwerveModule;
 
+
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.intake;
+import frc.robot.commands.intakeControl;
+import frc.robot.commands.shootIndex;
+import frc.robot.commands.spool;
+import frc.robot.subsystems.resetSubsystem;
+import frc.robot.subsystems.intakeSystems.ampSpin;
+import frc.robot.subsystems.intakeSystems.intakeArmSubsystem;
+import frc.robot.subsystems.intakeSystems.intakeRollerSubsystem;
+import frc.robot.subsystems.shooterSystems.shooterArmSubsystem;
+import frc.robot.subsystems.shooterSystems.shooterRollersSubsystem;
+
 public class RobotContainer {
     //public final  AHRS navx = new AHRS();
     
@@ -32,6 +48,15 @@ public class RobotContainer {
     public final Drivetrain drivetrain = new Drivetrain();
     public DigitalInput m_condeDetector = new DigitalInput(9);
     public Joystick driveJoystick = new Joystick(0);
+
+    public static intakeArmSubsystem m_IntakeArmSubsystem = new intakeArmSubsystem();
+  public static intakeRollerSubsystem m_IntakeRollerSubsystem = new intakeRollerSubsystem();
+  public static ampSpin m_AmpSpin = new ampSpin();
+  // intakeGroup^
+  public static shooterArmSubsystem m_ShooterArmSubsystem = new shooterArmSubsystem();
+  public static shooterRollersSubsystem m_ShooterRollersSubsystem = new shooterRollersSubsystem();
+  private resetSubsystem  resetVariables = new resetSubsystem();
+  
     
 
     //XboxController exampleXbox = new XboxController(0); // 0 is the USB Port to be used as indicated on the Driver Station
@@ -39,7 +64,6 @@ public class RobotContainer {
 
     //public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem(m_condeDetector);
     //public final DriveSubsystem driveSubsystem = new DriveSubsystem();
-    public final SmartDashboardUpdater smartDashboardUpdater = new SmartDashboardUpdater();
     
 
     
@@ -58,17 +82,19 @@ public class RobotContainer {
             
    
     public RobotContainer () {
-        setDefaultCommands ();
         configureButtonBindings();
        
-        NamedCommands.registerCommand("ResetNavxFieldHeading", drivetrain.resetNavxMark(0));//if this offsets by 90, like forward is left or right, go into drivetrain and delete the part about initial angle, that may be the issue. 
+        //NamedCommands.registerCommand("ResetNavxFieldHeading", drivetrain.resetNavxMark(0));//if this offsets by 90, like forward is left or right, go into drivetrain and delete the part about initial angle, that may be the issue. 
     }
     
 
 
     public void configureButtonBindings () {
-        drivetrain.drive(driveJoystick.getRawAxis(1), -driveJoystick.getRawAxis(0), driveJoystick.getRawAxis(4), true, false);
-        
+        //drivetrain.drive(driveJoystick.getRawAxis(1), -driveJoystick.getRawAxis(0), driveJoystick.getRawAxis(4), true, false);
+        new JoystickButton(driveJoystick, 1).onTrue(new intake());
+         new JoystickButton(driveJoystick, 2).onTrue(new shootIndex());
+    //  new JoystickButton(mJoystick, 2).onTrue(new intakeControl());
+         new JoystickButton(driveJoystick, 6).onTrue(new spool());
         
         //shooter commands
         // new Shoot(m_shooterSubsystem, 0);
@@ -86,7 +112,7 @@ public class RobotContainer {
     // Set default/passive commands for each subsystem
     public void setDefaultCommands () {
         
-        //drivetrain.setDefaultCommand(new Drive(drivetrain, driveJoystick));
+        drivetrain.setDefaultCommand(new Drive(drivetrain, driveJoystick));
         //ShooterSubsystem.setDefaultCommand(new Shoot(m_shooterSubsystem, 0));
 
     }

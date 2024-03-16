@@ -166,7 +166,7 @@ public class SwerveModule extends SubsystemBase {
         public double getTurnEncoderRadians() {
             double appliedOffset = (m_TurnPWMEncoder.getOutput() - turnEncoderOffset) % 1;
             //if (turnPWMChannel == 18) { 
-                System.out.println("Encoder " + Integer.toString(turnPWMChannel) + " "+ (m_TurnPWMEncoder));
+                //System.out.println("Encoder " + Integer.toString(turnPWMChannel) + " "+ (m_TurnPWMEncoder));
                 
             //} 
             

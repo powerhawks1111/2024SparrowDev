@@ -293,10 +293,10 @@ public class Drivetrain extends SubsystemBase {
      * Reset the navx and set a starting angle
      * @param initialAngle starting angle
      */
-    public Command resetNavxMark (double initialAngle) {
+    public void resetNavxMark (double initialAngle) {
         navx.reset(); //90 because of the feild orientation vs our driver fov
         navx.setAngleAdjustment(-initialAngle); //TODO negative because navx has a goofy coordinate system
-        return null;
+        //return null;
     }
     /**
      * Gives the current position and rotation of the robot (meters) based on the wheel odometry from where the robot started
