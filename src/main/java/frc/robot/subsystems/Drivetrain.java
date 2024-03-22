@@ -43,7 +43,7 @@ public class Drivetrain extends SubsystemBase {
     
     // kMaxSpeed was 2 AND kmaxangularspeed was pi/3 (before testing [district champs])
     // SOLID SPEEDS 3.25 M/S /AND PI/2.25 ROT/S
-    public static final double kMaxSpeed = 3.25; // 3.68 meters per second or 12.1 ft/s (max speed of SDS Mk3 with Neo motor)
+    public static final double kMaxSpeed = 3.25; // 3.68 meters per second or 12.1 ft/s (max speed of SDS Mk3 with Neo motor), think for mk4is we can go up to 5 or 6
     public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
 
     public static final AHRS navx = new AHRS();
@@ -79,11 +79,11 @@ public class Drivetrain extends SubsystemBase {
     private final Translation2d m_backRightLocation = new Translation2d( -0.2667, 0.2667); //Was using hypotenuse before, but I flipped negatives to test. This is how I think it's SUPPOSED to be done, not sure though. Try making this double negative and the one above it a y-positive only if it isnt aligned. 
     //also try doubling it if it's still off, thats what last year has it as so :| (thats a face for when i confuse myself).
 
-    // Constructor for each swerve module
-    private final SwerveModule m_frontRight = new SwerveModule(2, 1, 12, 0.4041136476028412, false, false); //
-    private final SwerveModule m_frontLeft = new SwerveModule(4, 3, 13, 0.9478090986952274, true, false); //.8100
-    private final SwerveModule m_backLeft = new SwerveModule(6, 5, 18, 0.787681, true, false); //0.020214250505356263
-    private final SwerveModule m_backRight = new SwerveModule(8, 7, 20, 0.49461688736542214, true, false); //0.82150
+    // Constructor for each swerve module (0.49461688736542214)
+    private final SwerveModule m_frontRight = new SwerveModule(2, 1, 12, 0.9091540727288518, false, false); //
+    private final SwerveModule m_frontLeft = new SwerveModule(4, 3, 13, 0.11184375279609382, true, false); //.8100
+    private final SwerveModule m_backLeft = new SwerveModule(6, 5, 18, 0.20064420501610514, true, false); //0.020214250505356263
+    private final SwerveModule m_backRight = new SwerveModule(8, 7, 20, 0.1882500047062501, true, false); //0.82150
 
     // Swerve Drive Kinematics (note the ordering [frontRight, frontLeft, backLeft, backRight] [counterclockwise from the frontRight])
     private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(m_frontRightLocation, m_frontLeftLocation, m_backLeftLocation, m_backRightLocation);
@@ -108,6 +108,7 @@ public class Drivetrain extends SubsystemBase {
     
     // Constructor
     public Drivetrain() {
+        // System.out.println(m_backLeft.m_TurnPWMEncoder.getOutput());
         m_initialStates = new SwerveDriveKinematics(m_frontRightLocation, m_frontLeftLocation, m_backLeftLocation, m_backRightLocation);
 
         m_odometry = new SwerveDriveOdometry(
@@ -204,7 +205,11 @@ public class Drivetrain extends SubsystemBase {
      //used to be: (double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean defenseHoldingMode)
     @SuppressWarnings("ParameterName")
     public void drive(double driverXStick, double driverYStick, double driverRotateStick, boolean fieldRelative, boolean defenseHoldingMode) {
-        
+        // System.out.println("Front Right Enc: " + m_frontRight.m_TurnPWMEncoder.getOutput());
+        // System.out.println("Front Left Enc: " + m_frontLeft.m_TurnPWMEncoder.getOutput());
+        // System.out.println("Back Right Enc: " + m_backRight.m_TurnPWMEncoder.getOutput());
+        // System.out.println("Back Left Enc: " + m_backLeft.m_TurnPWMEncoder.getOutput());
+
         //SmartDashboard.putNumber("X Speed", driverXStick);
         double offset = (navx.getAngle());//or get angle adjustment
         double realOffset = Math.toRadians(offset);//if the line below no worky add this in front //also it used to be navx.getRotation2d().getRadians()-offset or offset was realOffset

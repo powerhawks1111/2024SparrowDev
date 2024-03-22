@@ -112,13 +112,15 @@ public class Robot extends TimedRobot{
 
     @Override
     public void autonomousInit() {
-
+        m_RobotContainer.macGuyverDrive();
         //m_RobotContainer.driveAutoPath(); 
         
     }
 
     @Override
     public void autonomousPeriodic() {
+        
+        m_RobotContainer.macGuyverDrive();
         
         
     }
@@ -128,6 +130,10 @@ public class Robot extends TimedRobot{
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
+        
+        CommandScheduler.getInstance().cancelAll();
+        
+        
 
         
      //m_RobotContainer.setDefaultCommands();

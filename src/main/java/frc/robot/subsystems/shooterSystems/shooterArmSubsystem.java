@@ -8,43 +8,21 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycle;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.RobotContainer;
-import frc.robot.subsystems.resetSubsystem;
+
 
 public class shooterArmSubsystem extends SubsystemBase {
-    CANSparkMax armMotor = new CANSparkMax(12, MotorType.kBrushless);
-    DutyCycle absoluteShooterEncoder = new DutyCycle(new DigitalInput(19));
-    PIDController m_ControllerArm = new PIDController(0.6000,0,0.0008); // 0.8000, 0, 0.0900
-    private double desiredPosition;
-    public void positionArmShooter(double desiredPosition, boolean isShooting){
-         resetSubsystem.shooterHasNode = true;
-         if (isShooting){
-            m_ControllerArm.setP(0.2000);
-            m_ControllerArm.setI(0);
-            m_ControllerArm.setD(0);
-         }else{
-            m_ControllerArm.setP(0.6000);
-            m_ControllerArm.setI(0);
-            m_ControllerArm.setD(0.0008);
-         }
+    private CANSparkMax armMotor = new CANSparkMax(12, MotorType.kBrushless);
+    private DutyCycle absoluteShooterEncoder = new DutyCycle(new DigitalInput(19));
+    private PIDController m_ControllerArm = new PIDController(0.3000,0,0.0008); // 0.8000, 0, 0.0900
+    private double desiredPosition  = 0.342916;
+    public void positionArmShooter(double desiredPosition){
          this.desiredPosition = desiredPosition;
-    }
-    public void chainCommand(){
-        if (resetSubsystem.shooterHasNode){
-            new WaitCommand(.500);
-            double voltage = m_ControllerArm.calculate(getCurrentPosition(), desiredPosition);
-            armMotor.set(voltage);
-            SmartDashboard.putNumber("absoluteEncoderPosition", getCurrentPosition());
-        }
-    }
-    public double getCurrentPosition(){
-        return absoluteShooterEncoder.getOutput()*(2*Math.PI);
+         m_ControllerArm.setTolerance(1);
     }
     @Override
-    public void periodic(){
-        double voltage = m_ControllerArm.calculate(getCurrentPosition(), .85);
+    public void periodic() {
+        double voltage = m_ControllerArm.calculate(absoluteShooterEncoder.getOutput()*(2*Math.PI), desiredPosition);
         armMotor.set(voltage);
-        SmartDashboard.putNumber("armPosition", getCurrentPosition());
+        SmartDashboard.putNumber("shooterArmPosition", absoluteShooterEncoder.getOutput()*(2*Math.PI));
     }
 }

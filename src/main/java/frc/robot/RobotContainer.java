@@ -19,24 +19,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.drive.Drive;
 import frc.robot.commands.drive.resetNavx;
+import frc.robot.commands.intakeCommands.intake;
+import frc.robot.commands.shooterCommands.shoot;
+import frc.robot.commands.shooterCommands.spoolShooter;
 import frc.robot.subsystems.SwerveModule;
-
-
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.intake;
-import frc.robot.commands.intakeControl;
-import frc.robot.commands.shootIndex;
-import frc.robot.commands.spool;
-import frc.robot.subsystems.resetSubsystem;
-import frc.robot.subsystems.intakeSystems.ampSpin;
 import frc.robot.subsystems.intakeSystems.intakeArmSubsystem;
 import frc.robot.subsystems.intakeSystems.intakeRollerSubsystem;
 import frc.robot.subsystems.shooterSystems.shooterArmSubsystem;
 import frc.robot.subsystems.shooterSystems.shooterRollersSubsystem;
-
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
     //public final  AHRS navx = new AHRS();
     
@@ -50,17 +44,16 @@ public class RobotContainer {
     public final Drivetrain drivetrain = new Drivetrain();
     public DigitalInput m_condeDetector = new DigitalInput(9);
     public Joystick driveJoystick = new Joystick(0);
+    
     public Joystick operatorJoystick = new Joystick(1);
 
     public static intakeArmSubsystem m_IntakeArmSubsystem = new intakeArmSubsystem();
-  public static intakeRollerSubsystem m_IntakeRollerSubsystem = new intakeRollerSubsystem();
-  public static ampSpin m_AmpSpin = new ampSpin();
-  // intakeGroup^
-  public static shooterArmSubsystem m_ShooterArmSubsystem = new shooterArmSubsystem();
-  public static shooterRollersSubsystem m_ShooterRollersSubsystem = new shooterRollersSubsystem();
-  private resetSubsystem  resetVariables = new resetSubsystem();
-
+     public static intakeRollerSubsystem m_IntakeRollerSubsystem = new intakeRollerSubsystem();
+    public static shooterArmSubsystem m_ShooterArmSubsystem = new shooterArmSubsystem();
+    public static shooterRollersSubsystem m_ShooterRollersSubsystem = new shooterRollersSubsystem();
   
+    //public Joystick operatorJoystick = new Joystick(1);
+
   
   
     
@@ -92,12 +85,14 @@ public class RobotContainer {
        
         NamedCommands.registerCommand("ResetNavxFieldHeading", drivetrain.resetNavxMark(0));//if this offsets by 90, like forward is left or right, go into drivetrain and delete the part about initial angle, that may be the issue. 
        
-        NamedCommands.registerCommand("Spool Up", new spool());
         
-        NamedCommands.registerCommand("Shoot", new shootIndex());
-        NamedCommands.registerCommand("Intake", new intake());
-
         var alliance = DriverStation.getAlliance();
+
+        new JoystickButton(operatorJoystick, 1).whileTrue(new intake(true));
+        new JoystickButton(operatorJoystick, 1).whileFalse(new intake(false));
+        new JoystickButton(operatorJoystick, 2).onTrue(new spoolShooter());
+        new JoystickButton(operatorJoystick, 3).onTrue(new shoot());
+  
                     
                         
                     
@@ -106,21 +101,16 @@ public class RobotContainer {
 
     }
     
-
+    public void macGuyverDrive () {
+        drivetrain.drive(0, 0.1, 0, true, false);
+    }
 
     public void configureButtonBindings () { 
         drivetrain.drive(driveJoystick.getRawAxis(1), -driveJoystick.getRawAxis(0), -driveJoystick.getRawAxis(4), true, false);
-        new JoystickButton(operatorJoystick, 1).onTrue(new intake());
-         new JoystickButton(driveJoystick, 2).onTrue(new shootIndex());
-    //  new JoystickButton(mJoystick, 2).onTrue(new intakeControl());
-         new JoystickButton(operatorJoystick, 6).onTrue(new spool());
-         
-         new JoystickButton(operatorJoystick, 6).onTrue(new spool());
         if (driveJoystick.getRawButton(4) == false) {
-            drivetrain.drive(driveJoystick.getRawAxis(1), -driveJoystick.getRawAxis(0), -driveJoystick.getRawAxis(4), true, false);
+            drivetrain.drive(-driveJoystick.getRawAxis(1), driveJoystick.getRawAxis(0), driveJoystick.getRawAxis(4), true, false);
         
         } else {           
-             drivetrain.drive(-driveJoystick.getRawAxis(1), driveJoystick.getRawAxis(0), driveJoystick.getRawAxis(4), true, false);
         
         }
 

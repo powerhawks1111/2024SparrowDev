@@ -33,7 +33,7 @@ public class Drive extends Command {
         driverXStick = m_driverJoystick.getRawAxis(1);
         driverYStick = m_driverJoystick.getRawAxis(0); //these are switched because of the goofy coordinate syste,. the x direction is actually away from driver station
         driverRotateStick = m_driverJoystick.getRawAxis(4);
-        morePrecise = m_driverJoystick.getRawAxis(2) >= .2;
+         morePrecise = m_driverJoystick.getRawAxis(2) >= .2;
         double xSpeed = m_xspeedLimiter.calculate(MathUtil.applyDeadband(-driverXStick, 0.065)) * Drivetrain.kMaxSpeed; //these are all negative to correct to the feild CD system
         double ySpeed = m_yspeedLimiter.calculate(MathUtil.applyDeadband(-driverYStick, 0.065)) * Drivetrain.kMaxSpeed;
         double rot = m_rotLimiter.calculate(MathUtil.applyDeadband(-driverRotateStick, 0.005)) * Drivetrain.kMaxAngularSpeed;
@@ -56,7 +56,7 @@ public class Drive extends Command {
         if (!morePrecise) {
             // WAS .95 AND .95 and ROT was .9
             // m_drivetrain.drive(xSpeed*.95, ySpeed*.85, (rot +.0001 )*.81, false, false); //final movement; sends drive values to swerve
-            m_drivetrain.drive(driverXStick, -driverYStick, -(driverRotateStick)/2, true, false);//Changed rot to DriverRotateStick
+            m_drivetrain.drive(driverXStick, -driverYStick, (-(driverRotateStick)/2)+0.0001, true, false);//Changed rot to DriverRotateStick
         } else {
             m_drivetrain.drive(xSpeed, ySpeed, (rot), true, false); //final movement; sends drive values to swerve AND with field relative false and the rot add ons, it felt good. 
 
